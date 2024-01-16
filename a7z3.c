@@ -48,6 +48,5 @@ int main()
         if (pon[i])
             printf("\n%d. element niza (%d) se ponavlja %d puta.", i + 1, niz[i], pon[i]);
     }
-
     return 0;
 }
