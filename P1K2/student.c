@@ -32,6 +32,8 @@ int main()
     sortiraj(niz, n);
     ispisi(niz, n);
 
+    free(niz);
+    niz = NULL;
     return 0;
 }
 

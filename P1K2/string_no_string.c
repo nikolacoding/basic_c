@@ -17,8 +17,9 @@ int main()
     printf("Unesi string 2: ");
     scanf("%s", &string2);
 
+    char *podStrStr = podstr(string1, 3, 4);
     printf("Duzina stringa %s je %d.\n", string1, len(string1));
-    printf("Podstring: %s\n", podstr(string1, 1, 2));
+    printf("Podstring: %s\n", podStrStr);
     printf("Da li %s pocinje sa %s - %s\n\n", string1, string2, startstr(string1, string2) ? "Da." : "Ne.");
 
     char compstring[strbuff];
@@ -30,6 +31,8 @@ int main()
 
     printf("Da li %s pocinje sa %s - %s\n\n", string4, compstring, startstr(string4, compstring) ? "Da." : "Ne.");
 
+    free(podStrStr);
+    podStrStr = NULL;
     return 0;
 }
 
@@ -55,11 +58,12 @@ char *podstr(char *s, int p, int d)
     if (p > len(s) || p < 0 || d < 1 || p + d > len(s))
         return NULL;
 
-    char *retStr = (char *)malloc(strbuff * sizeof(char));
+    char *retStr = (char *)calloc(lenS, sizeof(char));
+    int retStrIndex = 0;
 
-    for (int i = 0; i < p + d; i++)
+    for (int i = p - 1; i < p + d - 1; i++)
     {
-        retStr[i] = s[i];
+        retStr[retStrIndex++] = s[i];
     }
 
     return retStr;
