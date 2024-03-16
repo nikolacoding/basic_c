@@ -1,57 +1,8 @@
-// Program uzima ulazne argumente sa komandne linije i provlaci ih u obliku dinamickog niza kroz funkciju za
-// transformaciju svake rijeci u nizu (char **transformisi). Ta funkcija kao jedan od argumenata
-// uzima pokazivac na funkciju koja transformise pojedine rijeci. Ulazni argumenti se moraju provuci kroz
-// sve jednu dostupnu funkciju i sacuvati u dinamickom nizu nizova (***argvModArray), te iz istog ispisati.
-// Za svaku dinamicku alokaciju se mora izvrsiti i dealokacija.
+#include "funkcije.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define NFUNC 3
-
-char **transformisi(char **, int, char *(*)(char *));
-
-char *invertuj(char *);
-char *skrati(char *);
-char *produzi(char *);
-
-int main(int argc, char *argv[])
-{
-    if (argc <= 1)
-        printf("Nema argumenata.");
-    else
-    {
-        char choice;
-
-        char ***argvModArray = (char ***)calloc(NFUNC, sizeof(char **));
-        argvModArray[0] = transformisi(argv, argc, &skrati);
-        argvModArray[1] = transformisi(argv, argc, &produzi);
-        argvModArray[2] = transformisi(argv, argc, &invertuj);
-
-        for (int i = 0; i < NFUNC; i++)
-            free(argvModArray[i][0]); // zaostali prvi argumenti
-
-        for (int i = 1; i < argc; i++)
-        {
-            for (int j = 0; j < NFUNC; j++)
-            {
-                printf("argv[%d] == %s -> %s\n", i, argv[i], argvModArray[j][i]);
-                free(argvModArray[j][i]);
-
-                if (j == NFUNC - 1)
-                {
-                    free(argvModArray[j]);
-                    printf("====================================\n");
-                }
-            }
-        }
-
-        free(argvModArray);
-        argvModArray = NULL;
-    }
-
-    return 0;
-}
 
 char **transformisi(char **niz, int n, char *(*f)(char *))
 {
