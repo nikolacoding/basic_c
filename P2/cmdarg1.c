@@ -1,6 +1,8 @@
-// Program uzima ulazne argumente sa komandne linije i provlaci ih kroz dolenavedene funkcije tako sto se u
-// nizu nizova dinamickih stringova nalaze rezultantne vrijednosti provlacenja ulaznih argumenata kroz sve jednu
-// funkciju za transformaciju
+// Program uzima ulazne argumente sa komandne linije i provlaci ih u obliku dinamickog niza kroz funkciju za
+// transformaciju svake rijeci u nizu (char **transformisi). Ta funkcija kao jedan od argumenata
+// uzima pokazivac na funkciju koja transformise pojedine rijeci. Ulazni argumenti se moraju provuci kroz
+// sve jednu dostupnu funkciju i sacuvati u dinamickom nizu nizova (***argvModArray), te iz istog ispisati.
+// Za svaku dinamicku alokaciju se mora izvrsiti i dealokacija.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +11,7 @@
 #define NFUNC 3
 
 char **transformisi(char **, int, char *(*)(char *));
+
 char *invertuj(char *);
 char *skrati(char *);
 char *produzi(char *);
@@ -21,31 +24,31 @@ int main(int argc, char *argv[])
     {
         char choice;
 
-        char ***argvModarray = (char ***)calloc(NFUNC, sizeof(char **));
-        argvModarray[0] = transformisi(argv, argc, &skrati);
-        argvModarray[1] = transformisi(argv, argc, &produzi);
-        argvModarray[2] = transformisi(argv, argc, &invertuj);
+        char ***argvModArray = (char ***)calloc(NFUNC, sizeof(char **));
+        argvModArray[0] = transformisi(argv, argc, &skrati);
+        argvModArray[1] = transformisi(argv, argc, &produzi);
+        argvModArray[2] = transformisi(argv, argc, &invertuj);
 
         for (int i = 0; i < NFUNC; i++)
-            free(argvModarray[i][0]); // zaostali prvi argumenti
+            free(argvModArray[i][0]); // zaostali prvi argumenti
 
         for (int i = 1; i < argc; i++)
         {
             for (int j = 0; j < NFUNC; j++)
             {
-                printf("argv[%d] == %s -> %s\n", i, argv[i], argvModarray[j][i]);
-                free(argvModarray[j][i]);
+                printf("argv[%d] == %s -> %s\n", i, argv[i], argvModArray[j][i]);
+                free(argvModArray[j][i]);
 
                 if (j == NFUNC - 1)
                 {
-                    free(argvModarray[j]);
+                    free(argvModArray[j]);
                     printf("====================================\n");
                 }
             }
         }
 
-        free(argvModarray);
-        argvModarray = NULL;
+        free(argvModArray);
+        argvModArray = NULL;
     }
 
     return 0;
