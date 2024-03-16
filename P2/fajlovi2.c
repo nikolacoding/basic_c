@@ -4,7 +4,7 @@
 
 int main(int argc, char const *argv[])
 {
-    FILE *fp = NULL;
+    FILE *fp;
     char f_ime[64], f_mode[2];
     char *f_content = (char *)calloc(BUFFER, sizeof(char));
 
