@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX 100
+#define VALUTA "KM"
 
 typedef struct
 {
@@ -67,10 +68,16 @@ int main(int argc, char const *argv[])
             artikli = (ARTIKAL *)realloc(artikli, n * sizeof(ARTIKAL));
             sortiraj(artikli, n);
             ispisi(artikli, n);
-            printf("\nUkupna cijena svih artikala: %.2lf\n", total);
+            printf("\nUkupna cijena svih artikala: %.2lf%s\n", total, VALUTA);
 
             if (popust)
                 printf("\nOstvaren popust: %d%%\n", popust);
+
+            if (popust != 100)
+            {
+                printf("Najskuplji artikal: %s [%.1lf%s]\n", artikli[0].naziv, artikli[0].cijena, VALUTA);
+                printf("Najjeftiniji artikal: %s [%.1lf%s]\n", artikli[n - 1].naziv, artikli[n - 1].cijena, VALUTA);
+            }
         }
         else
             printf("Greska pri otvaranju datoteke '%s'.", filename);
