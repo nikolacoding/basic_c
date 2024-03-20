@@ -49,6 +49,7 @@ int main(int argc, char const *argv[])
         else
             printf("Neuspjesno otvaranje datoteke '%s'.", filename);
     }
+    free(artikli);
     return 0;
 }
 
