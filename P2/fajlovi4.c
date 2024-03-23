@@ -55,6 +55,7 @@ int main(int argc, char const *argv[])
                 printf("%s [%d slova]\n", max[0], maxlen);
 
             printf("Ukupno rijeci: %d\n", count);
+            fclose(fp);
         }
         else
             printf("Datoteka '%s' nije pronadjena.", argv[1]);

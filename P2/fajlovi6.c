@@ -78,6 +78,8 @@ int main(int argc, char const *argv[])
                 printf("Najskuplji artikal: %s [%.1lf%s]\n", artikli[0].naziv, artikli[0].cijena, VALUTA);
                 printf("Najjeftiniji artikal: %s [%.1lf%s]\n", artikli[n - 1].naziv, artikli[n - 1].cijena, VALUTA);
             }
+
+            fclose(fp);
         }
         else
             printf("Greska pri otvaranju datoteke '%s'.", filename);

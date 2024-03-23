@@ -89,6 +89,7 @@ void pisi(ARTIKAL *niz, int n, FILE *fp)
     addmargin(fp, MARGINWIDTH, MARGINSTR);
     fprintf(fp, "%52s\n", "UKUPNO");
     fprintf(fp, "%52.1lf\n", ukupno);
+    fclose(fp);
 }
 
 void addmargin(FILE *fp, int n, const char const *s)
