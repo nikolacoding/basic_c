@@ -14,6 +14,7 @@
 // 'header(FILE *)' - upis vrha/headera tabele u datoteku
 // 'footer(FILE *)' - upis dna/footera tabele u datoteku
 // 'skiplines(FILE *, int)' - pomjeranje pokazivaca datoteke n redova nadole (preskakanje redova)
+// 'swap(STUDENT *, STUDENT *)' - zamjena elemanata pri sortiranju
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,6 +38,7 @@ STUDENT create_student(char *, char *, char *, double, char *);
 void header(FILE *);
 void footer(FILE *);
 void skiplines(FILE *, int);
+void swap(STUDENT *, STUDENT *);
 
 static int toSkip = 3; // broj linija za preskociti
 
@@ -185,21 +187,22 @@ void write(STUDENT *niz, int n, FILE *fp, void (*header)(FILE *), void (*footer)
     free(top);
 }
 
+void swap(STUDENT *item1, STUDENT *item2)
+{
+    STUDENT temp;
+
+    temp = *item1;
+    *item1 = *item2;
+    *item2 = temp;
+}
+
 void sort(STUDENT *niz, int n)
 {
     STUDENT temp;
     for (int i = 0; i < n - 1; i++)
-    {
         for (int j = i; j < n; j++)
-        {
             if (niz[i].prosjek < niz[j].prosjek)
-            {
-                temp = niz[i];
-                niz[i] = niz[j];
-                niz[j] = temp;
-            }
-        }
-    }
+                swap(&niz[i], &niz[j]);
 }
 
 void header(FILE *fp)
