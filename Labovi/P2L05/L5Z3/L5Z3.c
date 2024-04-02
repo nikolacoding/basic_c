@@ -19,76 +19,75 @@ void swap(int *, int *);
 
 int main(int argc, char const *argv[])
 {
-    char *filename;
-    int n = 0, *niz = (int *)malloc(MAX * sizeof(int));
+    char *filename = (char *)calloc(BUFF, sizeof(char));
+    char choice[64];
+
+    FILE *fp;
+    int *niz = (int *)malloc(MAX * sizeof(int));
+    int n = 0, mode;
+    enum modes
+    {
+        UNOS = 1,
+        PRIKAZ = 2
+    };
 
     if (argc == 2)
-    {
-        filename = (char *)calloc(BUFF + 1, sizeof(char));
-        FILE *fp;
-        strcpy(filename, argv[1]);
+        strcpy(filename, argv[1]), printf("Na komandnoj liniji je navedena datoteka '%s'.\n", filename);
 
-        int mode;
-        enum modes
-        {
-            UNOS = 1,
-            PRIKAZ = 2
-        };
+    printf("Unesi ime datoteke%s: ", filename[0] ? " ('#' za citanje)" : "");
+    scanf("%s", choice);
 
-        if (filename[0] == '#')
-            mode = PRIKAZ, filename++;
-        else
-            mode = UNOS;
-
-        if (mode == UNOS)
-        {
-            if (fp = fopen(filename, "wb"))
-            {
-                do
-                    printf("Unesi broj clanova: "), scanf("%d", &n);
-                while (n < 1 || n > MAX);
-                niz = (int *)realloc(niz, n * sizeof(int));
-
-                for (int i = 0; i < n; i++)
-                    printf("[%d] n = ", i + 1), scanf("%d", &niz[i]);
-
-                sortiraj(niz, n);
-
-                fwrite(niz, sizeof(int), n, fp);
-
-                fclose(fp);
-            }
-            else
-                printf("Greska pri otvaranju datoteke '%s'.", filename);
-        }
-        else if (mode == PRIKAZ)
-        {
-            if (fp = fopen(filename, "rb"))
-            {
-                int p, t;
-                do
-                {
-                    p = fread(&t, sizeof(int), 1, fp);
-                    if (p)
-                        niz[n++] = t;
-                } while (p);
-
-                niz = (int *)realloc(niz, n * sizeof(int));
-
-                printf("Cijeli brojevi iz datoteke '%s': ", filename);
-                for (int i = 0; i < n; i++)
-                    printf("%d ", niz[i]);
-
-                fclose(fp);
-            }
-        }
-
-        free(niz);
-        free(filename);
-        return 0;
-    }
+    if (strlen(choice) == 1 && choice[0] == '#')
+        mode = PRIKAZ;
     else
-        printf("Argumenti nisu pravilno navedeni.");
+        mode = UNOS, strcpy(filename, choice);
+
+    if (mode == UNOS)
+    {
+        if (fp = fopen(filename, "wb"))
+        {
+            do
+                printf("Unesi broj clanova: "), scanf("%d", &n);
+            while (n < 1 || n > MAX);
+            niz = (int *)realloc(niz, n * sizeof(int));
+
+            for (int i = 0; i < n; i++)
+                printf("[%d] n = ", i + 1), scanf("%d", &niz[i]);
+
+            sortiraj(niz, n);
+
+            fwrite(niz, sizeof(int), n, fp);
+
+            fclose(fp);
+        }
+        else
+            printf("Greska pri otvaranju datoteke '%s'.", filename);
+    }
+    else if (mode == PRIKAZ)
+    {
+        if (fp = fopen(filename, "rb"))
+        {
+            int p, t;
+            do
+            {
+                p = fread(&t, sizeof(int), 1, fp);
+                if (p)
+                    niz[n++] = t;
+            } while (p);
+
+            niz = (int *)realloc(niz, n * sizeof(int));
+
+            printf("Cijeli brojevi iz datoteke '%s': ", filename);
+            for (int i = 0; i < n; i++)
+                printf("%d ", niz[i]);
+
+            fclose(fp);
+        }
+    }
+
+    free(niz);
+    free(filename);
+    return 0;
 }
 
 void swap(int *a, int *b)

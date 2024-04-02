@@ -29,73 +29,70 @@ char *cezaruj(char *, int);
 
 int main(int argc, char const *argv[])
 {
-    char *filename;
+    char *filename = (char *)calloc(BUFF, sizeof(char));
+    char *cezar, choice[64];
+
+    FILE *fp;
+    int n = 0, mode;
+    enum modes
+    {
+        UNOS = 1,
+        PRIKAZ = 2
+    };
 
     if (argc == 2)
-    {
-        filename = (char *)calloc(BUFF + 1, sizeof(char));
-        FILE *fp;
-        strcpy(filename, argv[1]);
+        strcpy(filename, argv[1]), printf("Na komandnoj liniji je navedena datoteka '%s'.\n", filename);
 
-        char *cezar;
+    printf("Unesi ime datoteke%s: ", filename[0] ? " ('#' za citanje)" : "");
+    scanf("%s", choice);
 
-        int mode;
-        enum modes
-        {
-            UNOS = 1,
-            PRIKAZ = 2
-        };
-
-        if (filename[0] == '#')
-            mode = PRIKAZ, filename++;
-        else
-            mode = UNOS;
-
-        if (mode == UNOS)
-        {
-            if (fp = fopen(filename, "wb"))
-            {
-                char *sifra = (char *)calloc(BUFF, sizeof(char));
-                do
-                    printf("Unesi sifru: "), scanf("%s", sifra);
-                while (!validno(sifra));
-                cezar = cezaruj(sifra, POMJERAJ);
-
-                fwrite(cezar, sizeof(char), strlen(sifra), fp);
-                printf("Uneseno.");
-
-                free(sifra), free(cezar);
-                fclose(fp);
-            }
-            else
-                printf("Neuspjesno otvaranje datoteke '%s'.", filename);
-        }
-        else if (mode == PRIKAZ)
-        {
-            cezar = (char *)calloc(BUFF, sizeof(char));
-            if (fp = fopen(filename, "rb"))
-            {
-                int p, n = 0;
-                char b;
-                do
-                {
-                    p = fread(&b, sizeof(char), 1, fp);
-                    if (p)
-                        cezar[n++] = b;
-                } while (p);
-
-                cezar = (char *)realloc(cezar, BUFF * sizeof(char));
-                printf("Sifra u datoteci '%s': %s\n", filename, cezar);
-
-                free(cezar);
-                fclose(fp);
-            }
-            else
-                printf("Neuspjesno otvaranje datoteke '%s'.", filename);
-        }
-    }
+    if (strlen(choice) == 1 && choice[0] == '#')
+        mode = PRIKAZ;
     else
-        printf("Argumenti nisu pravilno navedeni.");
+        mode = UNOS, strcpy(filename, choice);
+
+    if (mode == UNOS)
+    {
+        if (fp = fopen(filename, "wb"))
+        {
+            char *sifra = (char *)calloc(BUFF, sizeof(char));
+            do
+                printf("Unesi sifru: "), scanf("%s", sifra);
+            while (!validno(sifra));
+            cezar = cezaruj(sifra, POMJERAJ);
+
+            fwrite(cezar, sizeof(char), strlen(sifra), fp);
+            printf("Uneseno.");
+
+            free(sifra), free(cezar);
+            fclose(fp);
+        }
+        else
+            printf("Neuspjesno otvaranje datoteke '%s'.", filename);
+    }
+    else if (mode == PRIKAZ)
+    {
+        cezar = (char *)calloc(BUFF, sizeof(char));
+        if (fp = fopen(filename, "rb"))
+        {
+            int p;
+            char b;
+            do
+            {
+                p = fread(&b, sizeof(char), 1, fp);
+                if (p)
+                    cezar[n++] = b;
+            } while (p);
+
+            cezar = (char *)realloc(cezar, BUFF * sizeof(char));
+            printf("Sifra u datoteci '%s': %s\n", filename, cezar);
+
+            free(cezar);
+            fclose(fp);
+        }
+        else
+            printf("Neuspjesno otvaranje datoteke '%s'.", filename);
+    }
 
     free(filename);
     return 0;

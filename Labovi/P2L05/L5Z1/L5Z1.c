@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define BUFF 64
 #define MAX 100
 
 typedef struct
@@ -28,71 +29,71 @@ void pisi(OSOBA);
 
 int main(int argc, char const *argv[])
 {
-    if (argc == 2)
+    char *filename = (char *)calloc(BUFF, sizeof(char));
+    char choice[64];
+
+    FILE *fp;
+    OSOBA *osobe;
+    int n = 0, mode;
+    enum modes
     {
-        char *filename = (char *)calloc(65, sizeof(char));
-        FILE *fp;
-        strcpy(filename, argv[1]);
+        UNOS = 1,
+        PRIKAZ = 2
+    };
 
-        OSOBA *osobe;
+    if (argc == 2)
+        strcpy(filename, argv[1]), printf("Na komandnoj liniji je navedena datoteka '%s'.\n", filename);
 
-        int n = 0, mode;
-        enum modes
-        {
-            UNOS = 1,
-            PRIKAZ = 2
-        };
+    printf("Unesi ime datoteke%s: ", filename[0] ? " ('#' za citanje)" : "");
+    scanf("%s", choice);
 
-        if (filename[0] == '#')
-            mode = PRIKAZ, filename++;
-        else
-            mode = UNOS;
-
-        if (mode == UNOS)
-        {
-            if (fp = fopen(filename, "wb"))
-            {
-                do
-                    printf("Unesi broj osoba: "), scanf("%d", &n);
-                while (n < 1 || n > MAX);
-
-                osobe = (OSOBA *)malloc(n * sizeof(OSOBA));
-
-                for (int i = 0; i < n; i++)
-                    printf("[%d] Ime Prezime Telefon: ", i + 1), unesi(&osobe[i]);
-
-                fwrite(osobe, sizeof(OSOBA), n, fp);
-            }
-        }
-        else if (mode == PRIKAZ)
-        {
-            if (fp = fopen(filename, "rb"))
-            {
-                OSOBA osoba;
-                osobe = (OSOBA *)malloc(MAX * sizeof(OSOBA));
-                int p;
-
-                do
-                {
-                    p = fread(&osoba, sizeof(OSOBA), 1, fp);
-                    if (p)
-                        osobe[n++] = osoba;
-                } while (p);
-
-                osobe = (OSOBA *)realloc(osobe, n * sizeof(OSOBA));
-
-                for (int i = 0; i < n; i++)
-                    pisi(osobe[i]);
-            }
-            else
-                printf("Datoteka '%s' nije pronadjena.", filename);
-        }
-
-        free(osobe), free(filename);
-        fclose(fp);
-    }
+    if (strlen(choice) == 1 && choice[0] == '#')
+        mode = PRIKAZ;
     else
-        printf("Argumenti nisu pravilno navedeni.");
+        mode = UNOS, strcpy(filename, choice);
+
+    if (mode == UNOS)
+    {
+        if (fp = fopen(filename, "wb"))
+        {
+            do
+                printf("Unesi broj osoba: "), scanf("%d", &n);
+            while (n < 1 || n > MAX);
+
+            osobe = (OSOBA *)malloc(n * sizeof(OSOBA));
+
+            for (int i = 0; i < n; i++)
+                printf("[%d] Ime Prezime Telefon: ", i + 1), unesi(&osobe[i]);
+
+            fwrite(osobe, sizeof(OSOBA), n, fp);
+        }
+    }
+    else if (mode == PRIKAZ)
+    {
+        if (fp = fopen(filename, "rb"))
+        {
+            OSOBA osoba;
+            osobe = (OSOBA *)malloc(MAX * sizeof(OSOBA));
+            int p;
+
+            do
+            {
+                p = fread(&osoba, sizeof(OSOBA), 1, fp);
+                if (p)
+                    osobe[n++] = osoba;
+            } while (p);
+
+            osobe = (OSOBA *)realloc(osobe, n * sizeof(OSOBA));
+
+            for (int i = 0; i < n; i++)
+                pisi(osobe[i]);
+        }
+        else
+            printf("Datoteka '%s' nije pronadjena.", filename);
+    }
+
+    free(osobe), free(filename);
+    fclose(fp);
 
     return 0;
 }
