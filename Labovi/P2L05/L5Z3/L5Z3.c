@@ -99,8 +99,16 @@ void swap(int *a, int *b)
 
 void sortiraj(int *niz, int n)
 {
-    for (int i = 0; i < n - 1; i++)
-        for (int j = i; j < n; j++)
-            if (niz[j] > niz[i])
-                swap(&niz[i], &niz[j]);
+    int i, j, h, temp;
+
+    for (h = n / 2; h > 0; h /= 2)
+    {
+        for (i = 1; i < n; i++)
+        {
+            temp = niz[i];
+            for (j = i; j >= h && niz[j - h] > temp; j -= h)
+                niz[j] = niz[j - h];
+            niz[j] = temp;
+        }
+    }
 }
