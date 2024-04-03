@@ -41,13 +41,12 @@ void bubbleSort(int *niz, int n)
 void shellSort(int *niz, int n)
 {
     int i, j, h, temp;
-
     for (h = n / 2; h > 0; h /= 2)
     {
         for (i = 1; i < n; i++)
         {
             temp = niz[i];
-            for (j = i; j >= h && temp < niz[j - h]; j -= h)
+            for (j = i; j >= h && niz[j - h] > temp; j -= h)
                 niz[j] = niz[j - h];
             niz[j] = temp;
         }
@@ -61,7 +60,7 @@ void insertionSort(int *niz, int n)
     for (i = 1; i < n; i++)
     {
         temp = niz[i];
-        for (j = i; j > 0 && temp < niz[j - 1]; j--)
+        for (j = i; j > 0 && niz[j - 1] > temp; j--)
             niz[j] = niz[j - 1];
         niz[j] = temp;
     }
@@ -73,9 +72,11 @@ void selectionSort(int *niz, int n)
 
     for (i = 0; i < n - 1; i++)
     {
-        for (min = i, j = i + 1; j < n; j++)
+        for (j = i + 1, min = i; j < n; j++)
+        {
             if (niz[j] < niz[min])
                 min = j;
+        }
         if (min != i)
             swap(niz + min, niz + i);
     }
