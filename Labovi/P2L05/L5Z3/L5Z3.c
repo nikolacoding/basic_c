@@ -99,6 +99,7 @@ void swap(int *a, int *b)
 
 void sortiraj(int *niz, int n)
 {
+    // shell-sort
     int i, j, h, temp;
 
     for (h = n / 2; h > 0; h /= 2)
