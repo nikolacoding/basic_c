@@ -1,4 +1,4 @@
-// Svi moguci algoritmi primjenjeni na isti niz
+// Razni algoritmi za sortiranje primjenjeni na isti niz
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +11,8 @@ void selectionSort(int *, int);
 void insertionSort(int *, int);
 void shellSort(int *, int);
 void bubbleSort(int *, int);
+void quickSort(int *, int, int);
+int split(int *, int, int); // pomocna funkcija za quickSort
 
 int main(int argc, char const *argv[])
 {
@@ -20,12 +22,44 @@ int main(int argc, char const *argv[])
     int n = sizeof(niz) / sizeof(niz[0]);
 
     ispisi(niz, n);
-    bubbleSort(niz, n);
+    quickSort(niz, 0, n - 1);
     ispisi(niz, n);
 
     printf("\n%sspjesno sortirano!", uporedi(niz, niz_sortiran, n) ? "U" : "Neu");
 
     return 0;
+}
+
+void quickSort(int *niz, int begin, int end)
+{
+    if (begin < end)
+    {
+        int pivot = split(niz, begin, end);
+        quickSort(niz, begin, pivot - 1);
+        quickSort(niz, pivot + 1, end);
+    }
+}
+
+int split(int *niz, int begin, int end) // pomocna funkcija za quickSort
+{
+    int i = begin, j = end;
+    int pivot = niz[begin];
+    while (i < j)
+    {
+        while (niz[i] >= pivot && i < j)
+            i++;
+        while (niz[j] < pivot)
+            j--;
+        if (i < j)
+        {
+            int temp = niz[i];
+            niz[i] = niz[j];
+            niz[j] = temp;
+        }
+    }
+    niz[begin] = niz[j];
+    niz[j] = pivot;
+    return j;
 }
 
 void bubbleSort(int *niz, int n)
