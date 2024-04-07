@@ -20,7 +20,7 @@ typedef struct
     int adresa;
 } INDEKS;
 
-int binSearchR(INDEKS *, int, int, char *);
+int binSearchR(INDEKS *, int, int, char *); // rekurzivno binarno pretrazivanje
 void ispisi_studenta(STUDENT *, int);
 void header(); // ispis headera na std izlaz
 void footer(); // ispis footera na std izlaz
