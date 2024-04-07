@@ -19,12 +19,12 @@ int interpSearch(int *, int, int);
 
 int main(int argc, char const *argv[])
 {
-    int niz[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int niz[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
 
-    const int kljuc = 8;
+    const int kljuc = 14;
     const int n = sizeof(niz) / sizeof(niz[0]);
 
-    int rez = interpSearch(niz, n - 1, kljuc);
+    int rez = binSearch(niz, n, kljuc);
     ispisiNiz(niz, n);
 
     if (rez != -1)
@@ -61,9 +61,11 @@ int MoveToFront(int *niz, int n, int kljuc)
         if (niz[i] == kljuc)
         {
             int temp = niz[i];
+
             for (; i > 0; i--)
                 niz[i] = niz[i - 1];
             niz[0] = temp;
+
             return 0;
         }
     return -1;
@@ -75,6 +77,7 @@ int MoveToBack(int *niz, int n, int kljuc)
         if (niz[i] == kljuc)
         {
             int temp = niz[i];
+
             for (; i < n - 1; i++)
                 niz[i] = niz[i + 1];
             niz[n - 1] = temp;
@@ -89,15 +92,15 @@ int binSearch(int *niz, int n, int kljuc)
     do
     {
         sredina = (begin + end) / 2;
-
         if (niz[sredina] == kljuc)
             return sredina;
 
-        if (kljuc < niz[sredina])
-            end = sredina - 1;
-        else
+        if (kljuc > niz[sredina])
             begin = sredina + 1;
+        else if (kljuc < niz[sredina])
+            end = sredina - 1;
     } while (begin <= end);
+
     return -1;
 }
 
@@ -116,21 +119,24 @@ int binSearchR(int *niz, int kljuc, int begin, int end)
         return binSearchR(niz, kljuc, begin, sredina - 1);
 }
 
+// KNBEB
+// NENB
 int interpSearch(int *niz, int n, int kljuc)
 {
-    int begin = 0, end = n - 1, sredina, brojilac, imenilac;
+    int begin = 0, end = n - 1, brojilac, imenilac, sredina;
     do
     {
-        brojilac = (kljuc - niz[begin]) * (end - begin);
-        imenilac = niz[end] - niz[begin];
-        sredina = begin + brojilac / imenilac;
+        imenilac = (kljuc - niz[begin]) * (end - begin);
+        brojilac = niz[end] - niz[begin];
+        sredina = begin + imenilac / brojilac;
 
         if (niz[sredina] == kljuc)
             return sredina;
-        if (kljuc < niz[sredina])
-            end = sredina - 1;
-        else
+
+        if (kljuc > niz[sredina])
             begin = sredina + 1;
+        else if (kljuc < niz[sredina])
+            end = sredina - 1;
 
     } while (begin <= end);
     return -1;
