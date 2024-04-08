@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 void ispisi(int *, int);
-int uporedi(int *, int *, int);
+int uporedi(int *, int *, int *, int);
 void swap(int *, int *);
 
 void selectionSort(int *, int);
@@ -16,8 +16,10 @@ int split(int *, int, int); // pomocna funkcija za quickSort
 
 int main(int argc, char const *argv[])
 {
+    int cmp;
     int niz[] = {-1, 3, 5, -12, 4, 16, 9, -8, 7, 1, 2};
-    int niz_sortiran[] = {-12, -8, -1, 1, 2, 3, 4, 5, 7, 9, 16};
+    int niz_asc[] = {-12, -8, -1, 1, 2, 3, 4, 5, 7, 9, 16};
+    int niz_desc[] = {16, 9, 7, 5, 4, 3, 2, 1, -1, -8, -12};
 
     int n = sizeof(niz) / sizeof(niz[0]);
 
@@ -25,7 +27,15 @@ int main(int argc, char const *argv[])
     quickSort(niz, 0, n - 1);
     ispisi(niz, n);
 
-    printf("\n%sspjesno sortirano!", uporedi(niz, niz_sortiran, n) ? "U" : "Neu");
+    if (cmp = uporedi(niz, niz_asc, niz_desc, n))
+    {
+        if (cmp == 1)
+            printf("Niz je sortiran u opadajucem redoslijedu.\n");
+        if (cmp == -1)
+            printf("Niz je sortiran u rastucem redoslijedu.\n");
+    }
+    else
+        printf("Niz nije sortiran.");
 
     return 0;
 }
@@ -42,14 +52,15 @@ void quickSort(int *niz, int begin, int end)
 
 int split(int *niz, int begin, int end) // pomocna funkcija za quickSort
 {
-    int i = begin, j = end;
-    int pivot = niz[begin];
+    int i = begin, j = end, pivot = niz[begin];
+
     while (i < j)
     {
-        while (niz[i] >= pivot && i < j)
+        while (niz[i] <= pivot && i < j)
             i++;
-        while (niz[j] < pivot)
+        while (niz[j] > pivot)
             j--;
+
         if (i < j)
         {
             int temp = niz[i];
@@ -66,25 +77,24 @@ void bubbleSort(int *niz, int n)
 {
     int i, j;
 
-    for (i = n - 1; i > 0; i--)
-        for (j = 0; j < i; j++)
-            if (niz[j + 1] < niz[j])
-                swap(niz + j + 1, niz + j);
+    for (int i = n - 1; i > 0; i--)
+        for (int j = 0; j < i; j++)
+            if (niz[j] > niz[j + 1])
+                swap(niz + j, niz + j + 1);
 }
 
 void shellSort(int *niz, int n)
 {
-    int i, j, h, temp;
+    int i, j, temp, h;
+
     for (h = n / 2; h > 0; h /= 2)
-    {
         for (i = 1; i < n; i++)
         {
-            temp = niz[i];
+            int temp = niz[i];
             for (j = i; j >= h && niz[j - h] > temp; j -= h)
                 niz[j] = niz[j - h];
             niz[j] = temp;
         }
-    }
 }
 
 void insertionSort(int *niz, int n)
@@ -104,15 +114,12 @@ void selectionSort(int *niz, int n)
 {
     int i, j, min;
 
-    for (i = 0; i < n - 1; i++)
+    for (i = 0; i < n; i++)
     {
         for (j = i + 1, min = i; j < n; j++)
-        {
             if (niz[j] < niz[min])
                 min = j;
-        }
-        if (min != i)
-            swap(niz + min, niz + i);
+        swap(niz + i, niz + min);
     }
 }
 
@@ -132,10 +139,29 @@ void ispisi(int *niz, int n)
     printf("\n");
 }
 
-int uporedi(int *niz1, int *niz2, int n)
+int uporedi(int *niz, int *nizasc, int *nizdesc, int n)
 {
+    // 0 - neuspjesno sortiran
+    // 1 - sortiran opadajuce (od veceg ka manjem)
+    // -1 - sortiran rastuce (od manjeg ka vecem)
+
     for (int i = 0; i < n; i++)
-        if (niz1[i] - niz2[i])
-            return 0;
-    return 1;
+    {
+        if (niz[i] - nizasc[i])
+            break;
+
+        if (i == n - 1)
+            return -1;
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (niz[i] - nizdesc[i])
+            break;
+
+        if (i == n - 1)
+            return 1;
+    }
+
+    return 0;
 }
