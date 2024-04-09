@@ -53,7 +53,6 @@ int split(INDEKS *, int, int);             // pomocna funkcija za quick-sort
 
 void file_pisi_indekse(FILE *, INDEKS *, int);
 
-int tezina(char *);                     // suma ASCII vrijednosti svakog karaktera stringa
 int trazi_studenta_seq(FILE *, char *); // sekvencijalna pretraga
 
 int main(int argc, char const *argv[])
@@ -281,14 +280,6 @@ void file_pisi_indekse(FILE *dat, INDEKS *niz, int n)
 {
     for (int i = 0; i < n; i++)
         fprintf(dat, "%s %d\n", niz[i].broj, niz[i].adresa);
-}
-
-int tezina(char *string)
-{
-    int ret = 0;
-    int len = strlen(string);
-    for (int i = 0; i < len; i++)
-        ret += (int)string[i];
 }
 
 int trazi_studenta_seq(FILE *dat, char *kljuc)
