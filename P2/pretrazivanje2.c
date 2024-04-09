@@ -98,7 +98,7 @@ void upisi_indekse(INDEKS *niz, int n, FILE *dat)
 void azuriraj_indekse(INDEKS *niz, INDEKS ind, int n)
 {
     int i;
-    for (i = n - 1; i > 0 && strcmp(ind.kljuc, niz[i - 1].kljuc) < 0; i--)
+    for (i = n - 1; i > 0 && strcmp(niz[i - 1].kljuc, ind.kljuc) > 0; i--)
         niz[i] = niz[i - 1];
     niz[i] = ind;
 }
