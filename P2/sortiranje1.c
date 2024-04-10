@@ -11,6 +11,7 @@ void selectionSort(int *, int);
 void insertionSort(int *, int);
 void shellSort(int *, int);
 void bubbleSort(int *, int);
+void mergeSort(int *, int, int);
 void quickSort(int *, int, int);
 int split(int *, int, int); // pomocna funkcija za quickSort
 
@@ -24,7 +25,7 @@ int main(int argc, char const *argv[])
     int n = sizeof(niz) / sizeof(niz[0]);
 
     ispisi(niz, n);
-    quickSort(niz, 0, n - 1);
+    selectionSort(niz, n);
     ispisi(niz, n);
 
     if (cmp = uporedi(niz, niz_asc, niz_desc, n))
@@ -40,6 +41,28 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
+void mergeSort(int *niz, int begin, int end)
+{
+    if (begin < end)
+    {
+        int sredina = (begin + end) / 2;
+        mergeSort(niz, begin, sredina);
+        mergeSort(niz, sredina + 1, end);
+        int len = end - begin + 1;
+        int temp[len];
+        int i = begin, j = sredina + 1, k = 0;
+
+        while (i <= sredina && j <= end)
+            temp[k++] = (niz[i] <= niz[j]) ? niz[i++] : niz[j++];
+        while (i <= sredina)
+            temp[k++] = niz[i++];
+        while (j <= end)
+            temp[k++] = niz[j++];
+        for (i = 0; i < len; i++)
+            niz[begin + i] = temp[i];
+    }
+}
+
 void quickSort(int *niz, int begin, int end)
 {
     if (begin < end)
@@ -52,7 +75,8 @@ void quickSort(int *niz, int begin, int end)
 
 int split(int *niz, int begin, int end) // pomocna funkcija za quickSort
 {
-    int i = begin, j = end, pivot = niz[begin];
+    int i = begin, j = end;
+    int pivot = niz[begin];
 
     while (i < j)
     {
@@ -77,21 +101,26 @@ void bubbleSort(int *niz, int n)
 {
     int i, j;
 
-    for (int i = n - 1; i > 0; i--)
-        for (int j = 0; j < i; j++)
-            if (niz[j] > niz[j + 1])
-                swap(niz + j, niz + j + 1);
+    for (i = n - 1; i > 0; i--)
+        for (j = 0; j < i; j++)
+            if (niz[j + 1] > niz[j])
+            {
+                int temp = niz[j];
+                niz[j] = niz[j + 1];
+                niz[j + 1] = temp;
+            }
 }
 
 void shellSort(int *niz, int n)
 {
-    int i, j, temp, h;
+    int i, j, h;
+    int temp;
 
     for (h = n / 2; h > 0; h /= 2)
         for (i = 1; i < n; i++)
         {
-            int temp = niz[i];
-            for (j = i; j >= h && niz[j - h] > temp; j -= h)
+            temp = niz[i];
+            for (j = i; j >= h && temp < niz[j - h]; j -= h)
                 niz[j] = niz[j - h];
             niz[j] = temp;
         }
@@ -99,12 +128,13 @@ void shellSort(int *niz, int n)
 
 void insertionSort(int *niz, int n)
 {
-    int i, j, temp;
+    int i, j;
+    int temp;
 
     for (i = 1; i < n; i++)
     {
         temp = niz[i];
-        for (j = i; j > 0 && niz[j - 1] > temp; j--)
+        for (j = i; j > 0 && temp > niz[j - 1]; j--)
             niz[j] = niz[j - 1];
         niz[j] = temp;
     }
@@ -114,12 +144,19 @@ void selectionSort(int *niz, int n)
 {
     int i, j, min;
 
-    for (i = 0; i < n; i++)
+    for (i = 0; i < n - 1; i++)
     {
         for (j = i + 1, min = i; j < n; j++)
+        {
             if (niz[j] < niz[min])
                 min = j;
-        swap(niz + i, niz + min);
+        }
+        if (i != min)
+        {
+            int temp = niz[i];
+            niz[i] = niz[min];
+            niz[min] = temp;
+        }
     }
 }
 
