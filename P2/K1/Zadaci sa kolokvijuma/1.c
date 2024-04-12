@@ -22,8 +22,9 @@ int palindrome(char *string, int i, int j)
 
 int main(int argc, char const *argv[])
 {
-    printf("%d", palindrome("asdsa", 0, 4));  // jeste
-    printf("%d", palindrome("asddsa", 0, 5)); // jeste
-    printf("%d", palindrome("bakar", 0, 4));  // nije
+    printf("%d", palindrome("asdsa", 0, 4));   // jeste
+    printf("%d", palindrome("asddsa", 0, 5));  // jeste
+    printf("%d", palindrome("racecar", 0, 6)); // jeste
+    printf("%d", palindrome("bakar", 0, 4));   // nije
     return 0;
 }

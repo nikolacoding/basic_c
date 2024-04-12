@@ -49,10 +49,11 @@ unsigned int *ucitajBajt(unsigned int niz[], int duzina, int *n, unsigned int po
 
 int main(int argc, char const *argv[])
 {
-    unsigned int niz[5] = {1, 2, 3, 4, 5};
+    const int n = 8;
+    unsigned int niz[8] = {1, 6, 7, 8, 9, 10, 11, 12};
     int d;
     unsigned int *retval;
-    ucitajBajt(niz, 5, &d, 1, 4);
+    ucitajBajt(niz, n, &d, 2, 4);
     printf("\nlen: %d\n", d);
 
     return 0;
