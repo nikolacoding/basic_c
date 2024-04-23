@@ -24,7 +24,7 @@ void *read(const char *name, int s, int n, ...)
         {
             int adr = va_arg(args, int);
             fseek(fp, adr, SEEK_SET);
-            fread(&ret[i], s, 1, fp); // ovo ne kompajluje jbg
+            fread(ret + i * s, s, 1, fp); // ovo ne kompajluje jbg
         }
     }
 
