@@ -30,10 +30,12 @@ void writeHeader(FILE *);
 void writeFooter(FILE *);
 void definisiStudenta(STUDENT *);
 
+#define MAXSTUDENTS 10
+#define BUFF 32
 int main(void)
 {
     int n;
-    char filename[32];
+    char filename[BUFF];
     CVOR *lista = NULL;
     STUDENT student;
     
@@ -43,11 +45,14 @@ int main(void)
     fprintf(stdout, "Unesi ime datoteke: ");
     fscanf(stdin, "%s", filename);
 
-    for (int i = 0; i < n; i++){
-        printf("> Podaci o %d. studentu:\n", i + 1);
-        definisiStudenta(&student);
-        dodaj(&lista, student);
+    if (n > 0 && n < MAXSTUDENTS){
+        for (int i = 0; i < n; i++){
+            printf("> Podaci o %d. studentu:\n", i + 1);
+            definisiStudenta(&student);
+            dodaj(&lista, student);
+        }
     }
+    else { printf("Broj studenata (%d) nije validan.\n", n); return 1; }
 
     if (upisi_u_datoteku(lista, filename)){
         printf("U '%s' su uspjesno uneseni podaci o sljedecim studentima:\n", filename);
@@ -98,13 +103,13 @@ int upisi_u_datoteku(CVOR *c, const char *filename){
 
 void definisiStudenta(STUDENT *st){
     fprintf(stdout, ">> Ime: ");
-    fscanf(stdin, "%s", &st->ime);
+    fscanf(stdin, "%s", st->ime);
 
     fprintf(stdout, ">> Prezime: ");
-    fscanf(stdin, "%s", &st->prezime);
+    fscanf(stdin, "%s", st->prezime);
 
     fprintf(stdout, ">> Broj indeksa: ");
-    fscanf(stdin, "%s", &st->indeks);
+    fscanf(stdin, "%s", st->indeks);
 }
 
 void writeHeader(FILE *fp){
