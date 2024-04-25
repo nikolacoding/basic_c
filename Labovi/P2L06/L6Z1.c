@@ -21,7 +21,7 @@ typedef struct cvor{
 } CVOR;
 
 // Funkcije iz zadatka
-void dodaj(CVOR **, STUDENT);
+void dodaj(CVOR **, const STUDENT);
 void ispisi(CVOR *);
 int upisi_u_datoteku(CVOR *, const char *);
 
@@ -53,21 +53,23 @@ int main(void)
         printf("U '%s' su uspjesno uneseni podaci o sljedecim studentima:\n", filename);
         ispisi(lista);
     }
-    else printf("Nije moguc upis u '%s'.\n", filename);
+    else { printf("Nije moguc upis u '%s'.\n", filename); return 1; }
 
     return 0;
 }
-void dodaj(CVOR **head, STUDENT info){
-    if ((*head) == NULL){
-        (*head) = malloc(sizeof(CVOR));
-        (*head)->info = info;
-        (*head)->next = NULL;
-    }
+void dodaj(CVOR **head, const STUDENT info){
+    CVOR *new = malloc(sizeof(CVOR));
+    new->info = info;
+    new->next = NULL;
+
+    if (*head == NULL) *head = new;
     else{
-        CVOR *temp = malloc(sizeof(CVOR));
-        temp->info = info;
-        temp->next = (*head);
-        *head = temp;
+        // '0' 
+        // '1h' -> '2' -> '3'
+        // '0' -> '1h' -> '2' -> '3'
+        // '0h' -> '1' -> '2' -> '3'
+        new->next = *head;
+        *head = new;
     }
 }
 
