@@ -32,6 +32,7 @@ typedef struct{
     int id;
     char ime[21], prezime[21], indeks[8];
     double prosjek;
+    DATUM datum_rodjenja;
 } STUDENT;
 
 typedef struct node{
@@ -269,6 +270,9 @@ void definisi_studenta(STUDENT *st){
 
     printf(">> Prosjek: ");
     scanf("%lf", &st->prosjek);
+
+    printf(">> Datum rodjenja (format: d m g): ");
+    scanf("%d %d %d", &st->datum_rodjenja.dan, &st->datum_rodjenja.mjesec, &st->datum_rodjenja.godina);
 }
 
 char *detaljan_info_string(NODE *target){
@@ -279,7 +283,10 @@ char *detaljan_info_string(NODE *target){
 
     STUDENT st = target->st;
 
-    len = sprintf(ret, "(ID: %d) %s | %s %s - %.2lf\n", st.id, st.indeks, st.prezime, st.ime, st.prosjek);
+    len = sprintf(ret, "(ID: %d) %s | %s %s (%d.%d.%d) - %.2lf\n", 
+    st.id, st.indeks, st.prezime, st.ime, 
+    st.datum_rodjenja.dan, st.datum_rodjenja.mjesec, st.datum_rodjenja.godina,
+    st.prosjek);
     ret = realloc(ret, len * sizeof(char) + 1);
 
     return ret;
