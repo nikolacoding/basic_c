@@ -1,0 +1,61 @@
+// Given the head of a linked list and an integer val, remove all the nodes of the linked list that has 
+// Node.val == val, and return the new head.
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct ListNode {
+    int val;
+    struct ListNode *next;
+};
+
+typedef struct ListNode NODE;
+#define MAXNODES 1e4
+
+NODE **findNodes(NODE **list, int val, int *size){
+    NODE *curr = *list;
+    NODE **nodes = malloc(MAXNODES * sizeof(NODE *));
+    int n = 0;
+
+    while (curr){
+        if (curr->val == val) nodes[n++] = curr;
+        curr = curr->next;
+    }
+    *size = n;
+    if (!n) { free(nodes); return NULL; }
+    nodes = realloc(nodes, n * sizeof(NODE *));
+    return nodes;
+}
+
+void deleteNode(NODE **list, NODE *target){
+    NODE *curr = *list, *prev = NULL;
+
+    while (curr){
+        if (curr != target){
+            prev = curr;
+            curr = curr->next;
+        }
+        else{
+            if (!prev){
+                *list = curr->next;
+                free(target);
+                return;
+            }
+            else{
+                prev->next = curr->next;
+                free(target);
+                return;
+            }
+        }
+    }
+}
+
+struct ListNode* removeElements(struct ListNode* head, int val) {
+    int size;
+    NODE **nodes = findNodes(&head, val, &size);
+
+    for (int i = 0; i < size; i++)
+        deleteNode(&head, nodes[i]);
+
+    return head;
+}
