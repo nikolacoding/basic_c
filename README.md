@@ -32,7 +32,7 @@ Material covered:
 | - | ------------- | ------------- |
 | 1 | Numeral systems and conversion  | Recursion |
 | 2 | Computer data representation  | Functions - advanced concepts  |
-| 3 | The basics of higher programming languages  | Files (text and binary)  |
+| 3 | The basics of high-level programming languages  | Files (text and binary)  |
 | 4 | Introduction to the C programming language | Sorting  |
 | 5 | Statements in C  | Search |
 | 6 | Advanced data types (arrays, structs, unions...) | Singly linked lists |
