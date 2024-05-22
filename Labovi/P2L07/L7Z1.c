@@ -74,6 +74,7 @@ int main(void){
     delete(&head, &tail, sub, cmpstr); // brisemo subotu
     write(head, write_one);
 
+    delete_list(&head, &tail);
     bulk_free(6, pon, uto, sri, cet, pet, sub);
     return 0;
 }
