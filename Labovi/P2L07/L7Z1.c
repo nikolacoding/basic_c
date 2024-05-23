@@ -203,12 +203,9 @@ void to_lower(char *string){
 }
 
 void bulk_free(int n, ...){
+    // oslobadjamo svaki dinamicki alociran string (char *) sa pretpostavkom da ce parametri uvijek biti pravilno zadani
     va_list args;
     va_start(args, n);
-
-    for (int i = 0; i < n; i++){
-        char *string = va_arg(args, char *);
-        free(string);
-    }
+    for (int i = 0; i < n; i++) free(va_arg(args, char *)); 
     va_end(args);
 }

@@ -83,19 +83,19 @@ void add_to_queue(NODE **qf, NODE **qr, int n){
 void izvrsi(NODE **qf, NODE **qr){
     PROCES curr;
 
-    int np = 0, total = 0;
+    int n_exec = 0, total_time = 0;
     while (get(qf, qr, &curr)){
-        char *n = curr.naziv;
+        char *naziv = curr.naziv;
         int t = curr.vrijeme_izvrsvanja;
 
-        printf("%s: %ds ", n, t);
+        printf("%s: %ds ", naziv, t);
         for (int i = 0; i < t; i++) { Sleep(1000); printf("."); };
         printf("\n");
 
-        np++;
-        total += t;
+        n_exec++;
+        total_time += t;
     }
-    printf("Uspjesno izvrseno %d procesa za %d sekundi!\n", np, total);
+    printf("Uspjesno izvrseno %d procesa za %d sekundi!\n", n_exec, total_time);
 }
 
 void put(NODE **qf, NODE **qr, PROCES info){
