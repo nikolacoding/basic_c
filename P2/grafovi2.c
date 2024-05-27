@@ -1,4 +1,4 @@
-// Formiranje obihvatnog stabla uz DFS
+// Formiranje obuhvatnog stabla uz DFS
 
 #include <stdio.h>
 #define MAX 10
