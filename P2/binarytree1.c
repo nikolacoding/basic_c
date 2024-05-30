@@ -61,16 +61,16 @@ void preorder(NODE *root){
 
 void inorder(NODE *root){
     if (root){
-        preorder(root->left);
+        inorder(root->left);
         printf(" %d", root->info);
-        preorder(root->right);
+        inorder(root->right);
     }
 }
 
 void postorder(NODE *root){
     if (root){
-        preorder(root->left);
-        preorder(root->right);
+        postorder(root->left);
+        postorder(root->right);
         printf(" %d", root->info);
     }
 }
