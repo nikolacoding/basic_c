@@ -11,14 +11,14 @@
 #define MAX 100
 #define nullptr NULL
 
-typedef struct node{
+typedef struct list_node{
     int info;
-    struct node *next;
-} node_t;
+    struct list_node *next;
+} lnode_t;
 
 typedef struct graph{
     int n;
-    node_t *nodes[MAX];
+    lnode_t *nodes[MAX];
 } graph_t;
 
 typedef struct queue{
@@ -29,14 +29,14 @@ typedef struct queue{
 int is_full(queue_t *q) { return q->r == MAX; }
 int is_empty(queue_t *q) { return q->f == -1 || q->f == q->r; }
 
-int put(queue_t *q, int info){
+int enq(queue_t *q, int info){
     if (is_full(q)) return 0;
     if (q->f == -1) q->f = 0;
     q->niz[q->r++] = info;
     return 1;
 }
 
-int get(queue_t *q, int *info){
+int deq(queue_t *q, int *info){
     if (is_empty(q)) return 0;
     *info = q->niz[q->f++];
     return 1;
@@ -47,31 +47,31 @@ void bfs(graph_t g, int start){
     char visited[MAX] = {0};
     int v;
     visited[start] = 1;
-    put(&queue, start);
+    enq(&queue, start);
 
-    while (get(&queue, &v)){
+    while (deq(&queue, &v)){
         printf("%d ", v + 1);
-        node_t *curr = g.nodes[v];
+        lnode_t *curr = g.nodes[v];
         while (curr){
             int u = curr->info;
             if (!visited[u]){
                 visited[u] = 1;
-                put(&queue, u);
+                enq(&queue, u);
             }
             curr = curr->next;
         }
     }
 }
 
-void pisi_susjede(node_t *head){
+void pisi_susjede(lnode_t *head){
     while (head){
         printf(" %d", head->info + 1);
         head = head->next;
     }
 }
 
-node_t* dodaj_kraj(node_t **head_ptr, int info){
-    node_t *p, *new = malloc(sizeof(node_t));
+lnode_t* dodaj_kraj(lnode_t **head_ptr, int info){
+    lnode_t *p, *new = malloc(sizeof(lnode_t));
     new->info = info;
     new->next = nullptr;
 
@@ -83,9 +83,9 @@ node_t* dodaj_kraj(node_t **head_ptr, int info){
     return new;
 }
 
-void delete_list(node_t **head_ptr){
+void delete_list(lnode_t **head_ptr){
     while (*head_ptr){
-        node_t *p = (*head_ptr)->next;
+        lnode_t *p = (*head_ptr)->next;
         free(*head_ptr);
         *head_ptr = p;
     }
