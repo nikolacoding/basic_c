@@ -109,7 +109,7 @@ tnode_t* bst_delete(tnode_t *root, const char *key){
     int cmp = strcmp(key, root->info);
 
     if (cmp > 0) root->right =  bst_delete(root->right, key);
-    else if (cmp < 0) root->left =  bst_delete(root->left, key);
+    else if (cmp < 0) root->left = bst_delete(root->left, key);
     else{
         if (!root->left && !root->right) { free(root); return NULL; }
         else if (!root->left) { tnode_t *target = root->right; free(root); return target; }
@@ -121,6 +121,7 @@ tnode_t* bst_delete(tnode_t *root, const char *key){
             root->left = bst_delete(root->left, max->info);
         }
     }
+    return root;
 }
 
 void bst_find(tnode_t *root, int (*criteria)(const char *), char **ret, int *v){
