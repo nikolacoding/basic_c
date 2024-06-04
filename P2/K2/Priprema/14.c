@@ -15,25 +15,25 @@
 typedef struct list_node{
     char pjesma[64];
     struct list_node *next, *prev;
-} lnode_t;
+} NODE;
 
-void append_node(lnode_t **head, const char *pjesma){
-    lnode_t *new = malloc(sizeof(lnode_t));
+void append_node(NODE **head, const char *pjesma){
+    NODE *new = malloc(sizeof(NODE));
     if (!new) return;
     strcpy(new->pjesma, pjesma);
     new->next = new->prev = NULL;
 
     if (!*head) *head = new;
     else{
-        lnode_t *curr = *head;
+        NODE *curr = *head;
         while (curr->next) curr = curr->next;
         curr->next = new;
         new->prev = curr;
     }
 }
 
-void zadnja_pjesma(lnode_t *head, int akcije[], int n){
-    lnode_t *curr = head;
+void zadnja_pjesma(NODE *head, int akcije[], int n){
+    NODE *curr = head;
     for (int i = 0; i < n; i++){
         if (!akcije[i]) curr = curr->prev;
         else{
@@ -45,7 +45,7 @@ void zadnja_pjesma(lnode_t *head, int akcije[], int n){
 }
 
 int main(void){
-    lnode_t *lista = NULL;
+    NODE *lista = NULL;
     int akcije[11] = {1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1};
 
     append_node(&lista, "Pjesma1");

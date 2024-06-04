@@ -10,19 +10,19 @@
 typedef struct list_node{
     int info;
     struct list_node *next;
-} lnode_t;
+} NODE;
 
 typedef struct queue_node{
-    lnode_t *info;
+    NODE *info;
     struct queue_node *next;
 } qnode_t;
 
 typedef struct{
     int n;
-    lnode_t *nodes[MAX];
-} graph_t;
+    NODE *nodes[MAX];
+} GRAPH;
 
-void enqueue(qnode_t **front, qnode_t **rear, lnode_t *info){
+void enqueue(qnode_t **front, qnode_t **rear, NODE *info){
     qnode_t *new = malloc(sizeof(qnode_t));
     if (!new) return;
 
@@ -35,7 +35,7 @@ void enqueue(qnode_t **front, qnode_t **rear, lnode_t *info){
     }
 }
 
-int dequeue(qnode_t **front, qnode_t **rear, lnode_t **info){
+int dequeue(qnode_t **front, qnode_t **rear, NODE **info){
     if (!*front) return 0;
 
     qnode_t *target = *front;
@@ -52,12 +52,12 @@ void init(void *ptr, int n, ...){
     va_list args;
     va_start(args, n);
     for (int i = 0; i < n; i++)
-        *va_arg(args, lnode_t **) = ptr;
+        *va_arg(args, NODE **) = ptr;
     va_end(args);
 }
 
-lnode_t* new_node(int info){
-    lnode_t *new = malloc(sizeof(lnode_t));
+NODE* new_node(int info){
+    NODE *new = malloc(sizeof(NODE));
     if (!new) return NULL;
 
     new->info = info;
@@ -65,16 +65,16 @@ lnode_t* new_node(int info){
     return new;
 }
 
-void append_node(lnode_t **head, int info){
+void append_node(NODE **head, int info){
     if (!*head) *head = new_node(info);
     else{
-        lnode_t *curr = *head;
+        NODE *curr = *head;
         while (curr->next) curr = curr->next;
         curr->next = new_node(info);
     }
 }
 
-void set_list(lnode_t **head, int n, ...){ 
+void set_list(NODE **head, int n, ...){ 
     va_list args;
     va_start(args, n);
     for (int i = 0; i < n; i++)
@@ -82,7 +82,7 @@ void set_list(lnode_t **head, int n, ...){
     va_end(args);
 }
 
-int are_linked(lnode_t *start, lnode_t *key){ // provjera da li su dva cvora spojena
+int are_linked(NODE *start, NODE *key){ // provjera da li su dva cvora spojena
     while (start){
         if (start->info == key->info)
             return 1;
@@ -110,7 +110,7 @@ void bfs(graph_t *g, qnode_t **front, qnode_t **rear, int start){
     
     visited[start] = 1;
     enqueue(front, rear, g->nodes[start]);
-    lnode_t *curr;
+    NODE *curr;
     while (dequeue(front, rear, &curr)){
         printf("%d ", curr->info);
         for (int v = 0; v < g->n; v++)
@@ -121,7 +121,7 @@ void bfs(graph_t *g, qnode_t **front, qnode_t **rear, int start){
 
 int main(void){
 
-    lnode_t *l1, *l2, *l3, *l4, *l5, *l6;
+    NODE *l1, *l2, *l3, *l4, *l5, *l6;
     init(NULL, 6, &l1, &l2, &l3, &l4, &l5, &l6); // inicijalizujemo svaki pokazivac na NULL
 
     set_list(&l1, 3, 1, 2, 6); // [1] -> 2 -> 6

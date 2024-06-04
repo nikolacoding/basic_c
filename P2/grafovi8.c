@@ -14,11 +14,11 @@
 typedef struct list_node{
     int info;
     struct list_node *next;
-} lnode_t;
+} NODE;
 
 typedef struct graph{
     int n;
-    lnode_t *nodes[MAX];
+    NODE *nodes[MAX];
 } graph_t;
 
 typedef struct queue{
@@ -51,7 +51,7 @@ void bfs(graph_t g, int start){
 
     while (deq(&queue, &v)){
         printf("%d ", v + 1);
-        lnode_t *curr = g.nodes[v];
+        NODE *curr = g.nodes[v];
         while (curr){
             int u = curr->info;
             if (!visited[u]){
@@ -63,15 +63,15 @@ void bfs(graph_t g, int start){
     }
 }
 
-void pisi_susjede(lnode_t *head){
+void pisi_susjede(NODE *head){
     while (head){
         printf(" %d", head->info + 1);
         head = head->next;
     }
 }
 
-lnode_t* dodaj_kraj(lnode_t **head_ptr, int info){
-    lnode_t *p, *new = malloc(sizeof(lnode_t));
+NODE* dodaj_kraj(NODE **head_ptr, int info){
+    NODE *p, *new = malloc(sizeof(NODE));
     new->info = info;
     new->next = nullptr;
 
@@ -83,9 +83,9 @@ lnode_t* dodaj_kraj(lnode_t **head_ptr, int info){
     return new;
 }
 
-void delete_list(lnode_t **head_ptr){
+void delete_list(NODE **head_ptr){
     while (*head_ptr){
-        lnode_t *p = (*head_ptr)->next;
+        NODE *p = (*head_ptr)->next;
         free(*head_ptr);
         *head_ptr = p;
     }
