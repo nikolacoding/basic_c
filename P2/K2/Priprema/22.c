@@ -30,20 +30,19 @@ int all_visited(int visited[], int n){
 
 void get_mst(int start, graph_t *g, graph_t *mst){
     int visited[MAX] = {};
-    if (start >= g->n) return;
     visited[start] = 1;
+
     while (!all_visited(visited, g->n)){
         int min = INT_MAX;
         int mu = -1, mv = -1;
-        for (int u = 0; u < g->n; u++){
-            for (int v = 0; v < g->n; v++){
-                if (g->ms[u][v] && visited[u] && !visited[v] && g->ms[u][v] < min)
-                    mu = u, mv = v, min = g->ms[u][v];
-            }
-        }
-
-        if (mv > -1)
+        for (int u = 0; u < g->n; u++)
+            for (int v = 0; v < g->n; v++)
+                if (visited[u] && !visited[v] && g->ms[u][v] && g->ms[u][v] < min)
+                    min = g->ms[u][v], mu = u, mv = v;
+        
+        if (mv > -1){
             mst->ms[mu][mv] = mst->ms[mv][mu] = min, visited[mv] = 1;
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 void callCity(char *cities[4], char *choices[4])
 {
@@ -8,7 +9,7 @@ void callCity(char *cities[4], char *choices[4])
     for (int i = 0; i <= arrayLength - 1; i++)
     {
         printf("%s je glavni grad koje drzave: ", cities[i]);
-        gets("%s", &choice);
+        gets(choice);
 
         if (choice == choices[i])
         {

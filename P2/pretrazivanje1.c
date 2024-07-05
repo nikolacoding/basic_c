@@ -7,44 +7,33 @@
 int ispisiNiz(int *, int);
 
 // Sekvencijalno pretrazivanje:
-int seqSearch(int *, int, int);
-int seqSearchU(int *, int, int);           // unaprijedjeno, bez nepotrebnih poredjenja
-int MoveToFront(int *, int, int);          // pomjera pronadjeni element na pocetka niza
-int MoveToBack(int *, int, int);           // pomjera pronadjeni element na kraj niza
+int seq_search(int *, int, int);
+int seq_search_s(int niz[], int kljuc);
+int seq_search_u(int *, int, int);           // unaprijedjeno, bez nepotrebnih poredjenja
+int move_to_front(int *, int, int);          // pomjera pronadjeni element na pocetka niza
+int move_to_back(int *, int, int);           // pomjera pronadjeni element na kraj niza
 int MoveToFrontBinR(int *, int, int, int); // MTF uz dodatak binarne rekurzivne pretrage
 
 // Binarno pretrazivanje i varijante:
-int binSearch(int *, int, int);       // iterativna/nerekurzivna implementacija
-int binSearchR(int *, int, int, int); // rekurzivna implementacija
-int interpSearch(int *, int, int);
+int bin_search(int *, int, int);       // iterativna/nerekurzivna implementacija
+int bin_search_rec(int *, int, int, int); // rekurzivna implementacija
+int interp_search(int *, int, int);
+int exp_search(int niz[], int k);
 
 int main(int argc, char const *argv[])
 {
-    int niz[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-
-    const int kljuc = 7;
-    const int n = sizeof(niz) / sizeof(niz[0]);
-
-    int rez = MoveToFrontBinR(niz, kljuc, 0, n - 1);
-    ispisiNiz(niz, n);
-
-    if (rez != -1)
-        printf("Kljuc %d je pronadjen na poziciji %d [%d].", kljuc, rez, niz[rez]);
-    else
-        printf("Kljuc %d nije pronadjen u nizu.", kljuc);
 
     return 0;
 }
 
-int seqSearch(int *niz, int n, int kljuc)
-{
+int seq_search(int *niz, int n, int kljuc){
     for (int i = 0; i < n; i++)
         if (niz[i] == kljuc)
             return i;
     return -1;
 }
 
-int seqSearchU(int *niz, int n, int kljuc)
+int seq_search_u(int *niz, int n, int kljuc)
 {
     int i = 0;
     while (niz[i] < kljuc && i < n)
@@ -56,7 +45,7 @@ int seqSearchU(int *niz, int n, int kljuc)
         return -1;
 }
 
-int MoveToFront(int *niz, int n, int kljuc)
+int move_to_front(int *niz, int n, int kljuc)
 {
     for (int i = 0; i < n; i++)
         if (niz[i] == kljuc)
@@ -69,7 +58,7 @@ int MoveToFront(int *niz, int n, int kljuc)
         }
 }
 
-int MoveToBack(int *niz, int n, int kljuc)
+int move_to_back(int *niz, int n, int kljuc)
 {
     for (int i = 0; i < n; i++)
         if (niz[i] == kljuc)
@@ -104,7 +93,7 @@ int MoveToFrontBinR(int *niz, int kljuc, int begin, int end)
         return MoveToFrontBinR(niz, kljuc, begin, sredina - 1);
 }
 
-int binSearch(int *niz, int n, int kljuc)
+int bin_search(int *niz, int n, int kljuc)
 {
     int begin = 0, end = n - 1, sredina;
 
@@ -123,7 +112,7 @@ int binSearch(int *niz, int n, int kljuc)
     return -1;
 }
 
-int binSearchR(int *niz, int kljuc, int begin, int end)
+int bin_search_rec(int *niz, int kljuc, int begin, int end)
 {
     int sredina = (begin + end) / 2;
 
@@ -134,17 +123,32 @@ int binSearchR(int *niz, int kljuc, int begin, int end)
         return -1;
 
     if (kljuc > niz[sredina])
-        return binSearchR(niz, kljuc, sredina + 1, end);
+        return bin_search_rec(niz, kljuc, sredina + 1, end);
     else if (kljuc < niz[sredina])
-        return binSearchR(niz, kljuc, begin, sredina - 1);
+        return bin_search_rec(niz, kljuc, begin, sredina - 1);
+}
+
+int exp_search(int niz[], int kljuc){
+    int begin = 0, end = 1;
+    // uzimamo sigurnu gornju i donju granicu
+    // jer bolje ne mozemo procijeniti
+    while (end < kljuc){
+        begin = end;
+        end *= 2;
+    }
+    // kada smo pronasli interval, pozivamo binarnu
+    // pretragu nad njim i vracamo rezultat
+
+    // koristimo rekurzivnu b.p. jer smo u njene argumente
+    // uveli granice koje ovdje koristimo takodje
+    return bin_search_rec(niz, kljuc, begin, end);
 }
 
 // KNBEB
 // NENB
-int interpSearch(int *niz, int n, int kljuc)
+int interp_search(int *niz, int n, int kljuc)
 {
     int begin = 0, end = n - 1, brojilac, imenilac, sredina;
-
     do
     {
         brojilac = (kljuc - niz[begin]) * (end - begin);
@@ -159,6 +163,7 @@ int interpSearch(int *niz, int n, int kljuc)
         else if (kljuc < niz[sredina])
             end = sredina - 1;
     } while (begin <= end);
+
     return -1;
 }
 

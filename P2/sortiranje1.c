@@ -7,15 +7,15 @@ void ispisi(int *, int);
 int uporedi(int *, int *, int *, int);
 void swap(int *, int *);
 
-void selectionSort(int *, int);
-void insertionSort(int *, int);
-void shellSort(int *, int);
-void bubbleSort(int *, int);
-void mergeSort(int *, int, int);
-void quickSort(int *, int, int);
-int split(int *, int, int); // pomocna funkcija za quickSort
+void selection_sort(int *, int);
+void insertion_sort(int *, int);
+void shell_sort(int *, int);
+void bubble_sort(int *, int);
+void merge_sort(int *, int, int);
+void quick_sort(int *, int, int);
+int split(int *, int, int); // pomocna funkcija za quick_sort
 
-int main(int argc, char const *argv[])
+int main(void)
 {
     int cmp;
     int niz[] = {-1, 3, 5, -12, 4, 16, 9, -8, 7, 1, 2};
@@ -25,7 +25,7 @@ int main(int argc, char const *argv[])
     int n = sizeof(niz) / sizeof(niz[0]);
 
     ispisi(niz, n);
-    selectionSort(niz, n);
+    bubble_sort(niz, n);
     ispisi(niz, n);
 
     if (cmp = uporedi(niz, niz_asc, niz_desc, n))
@@ -41,13 +41,13 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
-void mergeSort(int *niz, int begin, int end)
+void merge_sort(int *niz, int begin, int end)
 {
     if (begin < end)
     {
         int sredina = (begin + end) / 2;
-        mergeSort(niz, begin, sredina);
-        mergeSort(niz, sredina + 1, end);
+        merge_sort(niz, begin, sredina);
+        merge_sort(niz, sredina + 1, end);
         int len = end - begin + 1;
         int temp[len];
         int i = begin, j = sredina + 1, k = 0;
@@ -63,17 +63,17 @@ void mergeSort(int *niz, int begin, int end)
     }
 }
 
-void quickSort(int *niz, int begin, int end)
+void quick_sort(int *niz, int begin, int end)
 {
     if (begin < end)
     {
         int pivot = split(niz, begin, end);
-        quickSort(niz, begin, pivot - 1);
-        quickSort(niz, pivot + 1, end);
+        quick_sort(niz, begin, pivot - 1);
+        quick_sort(niz, pivot + 1, end);
     }
 }
 
-int split(int *niz, int begin, int end) // pomocna funkcija za quickSort
+int split(int *niz, int begin, int end)
 {
     int i = begin, j = end;
     int pivot = niz[begin];
@@ -97,13 +97,13 @@ int split(int *niz, int begin, int end) // pomocna funkcija za quickSort
     return j;
 }
 
-void bubbleSort(int *niz, int n)
+void bubble_sort(int *niz, int n)
 {
     int i, j;
 
     for (i = n - 1; i > 0; i--)
         for (j = 0; j < i; j++)
-            if (niz[j + 1] > niz[j])
+            if (niz[j + 1] < niz[j])
             {
                 int temp = niz[j];
                 niz[j] = niz[j + 1];
@@ -111,7 +111,7 @@ void bubbleSort(int *niz, int n)
             }
 }
 
-void shellSort(int *niz, int n)
+void shell_sort(int *niz, int n)
 {
     int i, j, h;
     int temp;
@@ -126,7 +126,7 @@ void shellSort(int *niz, int n)
         }
 }
 
-void insertionSort(int *niz, int n)
+void insertion_sort(int *niz, int n)
 {
     int i, j;
     int temp;
@@ -134,23 +134,21 @@ void insertionSort(int *niz, int n)
     for (i = 1; i < n; i++)
     {
         temp = niz[i];
-        for (j = i; j > 0 && temp > niz[j - 1]; j--)
+        for (j = i; j > 0 && temp < niz[j - 1]; j--)
             niz[j] = niz[j - 1];
         niz[j] = temp;
     }
 }
 
-void selectionSort(int *niz, int n)
+void selection_sort(int *niz, int n)
 {
     int i, j, min;
-
     for (i = 0; i < n - 1; i++)
     {
         for (j = i + 1, min = i; j < n; j++)
-        {
             if (niz[j] < niz[min])
                 min = j;
-        }
+
         if (i != min)
         {
             int temp = niz[i];

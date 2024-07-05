@@ -4,16 +4,27 @@
 #define MAX 10
 
 typedef struct graph{
+    // broj cvorova
     int n;
+    // inf. sadrzaj
+    // prema indeksu
     char nodes[MAX];
+    // matrica susjednosti
     int ms[MAX][MAX];
 } GRAF;
 
 void dfs_visit_st(int u, GRAF *g, GRAF *st, int visited[]){
+    // oznacavamo trenutni cvor kao posjecen
     visited[u] = 1;
+
+    // obilazimo svakog susjeda DFS logikom
     for (int v = 0; v < g->n; v++)
         if (g->ms[u][v] && !visited[v]){
+            // u novi (neusmjereni) graf upisujemo svaku
+            // granu kojom prodjemo pri obilasku
             st->ms[u][v] = st->ms[v][u] = 1;
+
+            // rekurzivni DFS poziv
             dfs_visit_st(v, g, st, visited);
         }
 }

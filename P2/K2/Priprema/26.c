@@ -35,24 +35,22 @@ int min_dist(GRAF gf, int distances[], int visited[]){
 void dostupni(GRAF gf, GRAD gr){
     int visited[100] = {};
     int distances[100];
-    int start = grad_index(gf, gr);
     for (int i = 0; i < gf.n; i++) distances[i] = INT_MAX;
+    int start = grad_index(gf, gr);
     distances[start] = 0;
-    
+
     for (int i = 0; i < gf.n; i++){
         int u = min_dist(gf, distances, visited);
         visited[u] = 1;
-        
         for (int v = 0; v < gf.n; v++){
-            if (!visited[v] && gf.ms[u][v] && distances[u] != INT_MAX && gf.ms[u][v] + distances[u] < distances[v])
+            if (!visited[v] && gf.ms[u][v] && distances[u] != INT_MAX && distances[u] + gf.ms[u][v] < distances[v])
                 distances[v] = distances[u] + gf.ms[u][v];
         }
     }
 
-    printf("Najmanja udaljenost grada '%s' od gradova:\n", gf.gradovi[start].naziv);
-    for (int i = 0; i < gf.n; i++){
+    printf("Najmanja udaljenost od grada '%s' do:\n", gr.naziv);
+    for (int i = 0; i < gf.n; i++)
         if (i != start) printf("%s [%d]\n", gf.gradovi[i].naziv, distances[i]);
-    }
 }
 
 int main(void){

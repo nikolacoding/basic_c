@@ -20,7 +20,7 @@ typedef struct queue_node{
 typedef struct{
     int n;
     NODE *nodes[MAX];
-} GRAPH;
+} graph_t;
 
 void enqueue(qnode_t **front, qnode_t **rear, NODE *info){
     qnode_t *new = malloc(sizeof(qnode_t));

@@ -2,11 +2,19 @@
 
 #include <stdio.h>
 #include <limits.h>
-#define MAX 10
 
+#define MAX 10 // maks. broj cvorova (i dimenzija m.s)
+// uvijek mora biti ili literal ili pretprocesorska konstanta
+// (ako je obicna globalna promjenljiva, nece se kompajlovati)
 typedef struct graph{
+    // broj cvorova
     int n;
+
+    // inf. sadrzaj cvorova
+    // po indeksima
     char nodes[MAX];
+    
+    // matrica susjednosti
     int ms[MAX][MAX];
 } GRAF;
 
@@ -17,16 +25,22 @@ int allVisited(int visited[], int n){
 }
 
 void mst_prim(GRAF *g, GRAF *mst){
+    // niz posjecenosti
+    // inicijalizujemo sve na nulu
+    // ali nulti indeks na 1:
+    // int visited[MAX] = {}; visited[0] = 1;
     int visited[MAX] = {1};
 
-    // dok nisu svi spojeni (pretpostavljamo da nema odsjecenih cvorova)
+    // izvrsavanje prestaje kad su svi cvorovi povezani u MST
     while (!allVisited(visited, g->n)){
-        // pratimo najmanju tezinu ivice kao i indekse cvorova izmedju kojih ona stoji
+        // INT_MAX zahtijeva zaglavlje <limits.h> i sluzi nam kao indikator
+        // beskonacnosti tj. najvece (ne)moguce vrijednosti
+        // pratimo najmanju tezinu grane kao i indekse cvorova izmedju kojih ona stoji
         int mg = INT_MAX, mu = -1, mv = -1;
         // iterativno prolazimo cijelu matricu susjednosti
         for (int u = 0; u < g->n; u++){
             for (int v = 0; v < g->n; v++){
-                // ako je jedan cvor posjecen, drugi nije, i postoji veza/ivica izmedju njih
+                // ako je jedan cvor posjecen, drugi nije, i postoji veza izmedju njih...
                 if (visited[u] && !visited[v] && g->ms[u][v]){
                     // ako je tezina njihove veze manja od najmanje zabiljezene, cinimo je novom najmanjom
                     if (g->ms[u][v] < mg)
@@ -44,6 +58,7 @@ void mst_prim(GRAF *g, GRAF *mst){
 }
 
 int main(){
+    // graf sa primjera
     GRAF g = {6, {'A', 'B', 'C', 'D', 'E', 'F'}, 
         {
             {0, 70, 50, 80, 0, 0},
@@ -57,6 +72,7 @@ int main(){
     GRAF MST = {6, {'A', 'B', 'C', 'D', 'E', 'F'}, {{0}}};
     mst_prim(&g, &MST);
 
+    // ispis matrice
     for (int i = 0; i < g.n; i++){
         for (int j = 0; j < g.n; j++)
             printf("%02d ", g.ms[i][j]);

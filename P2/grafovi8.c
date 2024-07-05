@@ -17,7 +17,10 @@ typedef struct list_node{
 } NODE;
 
 typedef struct graph{
+    // broj cvorova
     int n;
+
+    // niz pokazivaca na glave lista susjednosti
     NODE *nodes[MAX];
 } graph_t;
 

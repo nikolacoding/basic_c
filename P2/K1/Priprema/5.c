@@ -18,9 +18,9 @@ char **linije(FILE *dat, int (*validiraj)(const char *));
 char *procitaj(int n, ...);
 
 // pomocne funkcije:
-int over50(const char *);
+int manje_od_100(const char *line) { return strlen(line) < 100; }
 
-int main(int argc, char const *argv[])
+int main(void)
 {
     const char filename[] = "5.txt";
     const char filename2[] = "5_2.txt";
@@ -32,7 +32,7 @@ int main(int argc, char const *argv[])
 
     if (dat = fopen(filename, "r"))
     {
-        valid = linije(dat, &over50);
+        valid = linije(dat, &manje_od_100);
         for (int i = 0; i < validLines; i++)
             printf("[%d] %s\n", i + 1, valid[i]), free(valid[i]);
         fclose(dat);
@@ -57,7 +57,7 @@ int main(int argc, char const *argv[])
 
 char *procitaj(int n, ...)
 {
-    int argn = n * 2, len;
+    int len;
 
     va_list args;
     va_start(args, n);
@@ -115,11 +115,4 @@ char **linije(FILE *dat, int (*validiraj)(const char *))
     free(buffer);
     ret = (char **)realloc(ret, n * sizeof(char *));
     return ret;
-}
-
-int over50(const char *line)
-{
-    if (strlen(line) > 50)
-        return 1;
-    return 0;
 }

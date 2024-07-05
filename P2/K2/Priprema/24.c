@@ -96,11 +96,11 @@ tnode_t* new_node(const char *info){
 
 tnode_t* bst_add(tnode_t *root, const char *info){
     if (!root) return new_node(info);
-    
+
     int cmp = strcmp(info, root->info);
     if (cmp > 0) root->right = bst_add(root->right, info);
     else if (cmp < 0) root->left = bst_add(root->left, info);
-
+    
     return root;
 }
 
@@ -108,7 +108,7 @@ tnode_t* bst_delete(tnode_t *root, const char *key){
     if (!root) return NULL;
     int cmp = strcmp(key, root->info);
 
-    if (cmp > 0) root->right =  bst_delete(root->right, key);
+    if (cmp > 0) root->right = bst_delete(root->right, key);
     else if (cmp < 0) root->left = bst_delete(root->left, key);
     else{
         if (!root->left && !root->right) { free(root); return NULL; }

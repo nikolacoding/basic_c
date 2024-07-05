@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <string.h>
 
+// Strukture
 typedef struct grad{
     char naziv[101];
 } GRAD;
@@ -14,13 +15,17 @@ typedef struct graf{
     int ms[100][100];
 } GRAF;
 
+// Pomocne funkcije
 int grad_index(GRAF gf, GRAD gr){
+    // vraca indeks nekog grada u sklopu grafa
     for (int i = 0; i < gf.n; i++)
         if (!strcmp(gr.naziv, gf.gradovi[i].naziv)) return i;
     return -1;
 }
 
 int min_dist(GRAF gf, int distances[], int visited[]){
+    // vraca indeks najmanje grane koja vodi ka
+    // neposjecenom cvoru u skladu sa Dijkstra logikom
     int min = INT_MAX;
     int min_i;
 
@@ -55,12 +60,8 @@ void dostupni(GRAF gf, GRAD gr){
 }
 
 int main(void){
-    GRAD BLK = {"Banja Luka"};
-    GRAD BIJ = {"Bijeljina"};
-    GRAD JAJ = {"Jajce"};
-    GRAD SIP = {"Sipovo"};
-    GRAD SPL = {"Split"};
-    GRAD TRE = {"Trebinje"};
+    GRAD BLK = {"Banja Luka"}, BIJ = {"Bijeljina"}, JAJ = {"Jajce"};
+    GRAD SIP = {"Sipovo"}, SPL = {"Split"}, TRE = {"Trebinje"};
 
     GRAF g = {6, {BLK, BIJ, JAJ, SIP, SPL, TRE},
         {
