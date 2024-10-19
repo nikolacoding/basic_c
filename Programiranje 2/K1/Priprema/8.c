@@ -95,8 +95,10 @@ void pronadji_vozilo(const char *dat, const char *ind, const char *target)
                 free(niz);
                 return;
             }
-            else
+            else{
                 printf("Greska.\n");
+                return;
+            }
         }
 
         if (kljuc > niz[sredina].adresa)
